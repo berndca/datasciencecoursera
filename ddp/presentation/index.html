@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<title>Reproducible Pitch</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=1274, user-scalable=no">
+	<meta name="description" content="Reproducible Pitch">
+	<meta name="author" content="Bernd Meyer">
+	<meta name="generator" content="slidify" />
+	<!-- LOAD STYLE SHEETS -->
+	<link rel="stylesheet" href="libraries/frameworks/shower/themes/ribbon/styles/screen.css">
+	<link rel="stylesheet" media="print"
+	  href="libraries/frameworks/shower/themes/ribbon/styles/print.css">
+	<link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css">  <link rel="stylesheet" href = "assets/css/ribbons.css">
+
+	<!--
+		To apply styles to the certain slides
+		use slide ID to get needed elements
+		-->
+	<style>
+		#Cover h2 {
+      margin:65px 0 0;
+			color:#FFF;
+			text-align:center;
+			font-size:70px;
+			}
+		#FitToWidth h2,
+		#FitToHeight h2 {
+			color:#FFF;
+			text-align:center;
+			}
+	</style> 
+</head>
+<body class="list">
+  <header class="caption">
+  	<h1>Reproducible Pitch</h1>
+	</header>
+  <section class="slide " id="slide-1">
+  <div>
+    <h2>Reproducible Pitch</h2>
+    <h3>Bernd Meyer</h3>
+
+<h4>May 6 2020</h4>
+
+  </div>
+</section>
+<section class="slide " id="slide-2">
+  <div>
+    <h2>Why Reproducible Reports?</h2>
+    <ul>
+<li>Allows others to replicate the results and independently verify the results.</li>
+<li>Replication is the highest standard in science.</li>
+</ul>
+
+  </div>
+</section>
+<section class="slide " id="slide-3">
+  <div>
+    <h2>How?</h2>
+    <ul>
+<li><a href="https://en.wikipedia.org/wiki/Literate_programming">Literate Programming</a></li>
+<li>Executable source code snippets are inlined in the report and woven together.</li>
+<li>It&#39;s supported in many programming languages.</li>
+<li>For instance in R we have <a href="http://rmarkdown.rstudio.com">R Markdown</a>.</li>
+</ul>
+
+  </div>
+</section>
+<section class="slide " id="slide-4">
+  <div>
+    <h2>R Markdown</h2>
+    <ul>
+<li>R Markdown combines executable code snippets in R and other programming languages with a narrative text to fully reproducible reports.</li>
+</ul>
+
+<pre><code class="r">round(pi * 42^2, 3)
+</code></pre>
+
+<pre><code>## [1] 5541.769
+</code></pre>
+
+  </div>
+</section>
+<section class="slide " id="slide-5">
+  <div>
+    <h2>Plot Example</h2>
+    <pre><code class="r">plot(pressure, main=&quot;Vapor Pressure of Mercury 
+     as a Function of Temperature&quot;)
+</code></pre>
+
+<p><img src="assets/fig/pressure-1.png" alt="plot of chunk pressure"></p>
+
+  </div>
+</section>
+  <div class="progress">
+    <div></div>
+  </div>
+	<script src="libraries/frameworks/shower/shower.js"></script>
+	<!-- LOAD HIGHLIGHTER JS FILES -->
+	<script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	<!-- DONE LOADING HIGHLIGHTER JS FILES -->
+	 
+		<!-- Copyright © 2010–2012 Vadim Makeev — pepelsbey.net -->
+	<!-- Photos by John Carey — fiftyfootshadows.net -->
+</body>
+</html>
