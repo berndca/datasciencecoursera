@@ -20,8 +20,8 @@ knit        : slidify::knit2slides
 ## My Shiny App 
 
 - My app "Adding and Deleting Points" fits a linear model mpg ~ wt for the mtcars dataset.
-- It allows the user to uses the brush function to delete and add points in the scatter plot.
-- Each point a represents a observation. Deleted points are excluded from the model data.
+- It allows the user to delete and add points in the scatter plot.
+- Each point a represents an observation. Deleted points are excluded from the model data.
 - The coefficients for the linear model are being updated after any changes to the points.
 
 ---
