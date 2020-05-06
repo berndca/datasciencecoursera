@@ -46,49 +46,51 @@
 </section>
 <section class="slide " id="slide-2">
   <div>
-    <h2>Why Reproducible Reports?</h2>
+    <h2>My Shiny App</h2>
     <ul>
-<li>Allows others to replicate the results and independently verify the results.</li>
-<li>Replication is the highest standard in science.</li>
+<li>My app &quot;Adding and Deleting Points&quot; fits a linear model mpg ~ wt for the mtcars dataset.</li>
+<li>It allows the user to uses the brush function to delete and add points in the scatter plot.</li>
+<li>Each point a represents a observation. Deleted points are excluded from the model data.</li>
+<li>The coefficients for the linear model are being updated after any changes to the points.</li>
 </ul>
 
   </div>
 </section>
 <section class="slide " id="slide-3">
   <div>
-    <h2>How?</h2>
+    <h2>Model</h2>
     <ul>
-<li><a href="https://en.wikipedia.org/wiki/Literate_programming">Literate Programming</a></li>
-<li>Executable source code snippets are inlined in the report and woven together.</li>
-<li>It&#39;s supported in many programming languages.</li>
-<li>For instance in R we have <a href="http://rmarkdown.rstudio.com">R Markdown</a>.</li>
+<li>The model is lm(mpg ~ wt, data = mtcars)</li>
+<li>Below are the models coefficients with the full mtcars dataset. </li>
 </ul>
+
+<pre><code class="r">summary(lm(mpg ~ wt, data = mtcars))$coef
+</code></pre>
+
+<pre><code>##              Estimate Std. Error   t value     Pr(&gt;|t|)
+## (Intercept) 37.285126   1.877627 19.857575 8.241799e-19
+## wt          -5.344472   0.559101 -9.559044 1.293959e-10
+</code></pre>
 
   </div>
 </section>
 <section class="slide " id="slide-4">
   <div>
-    <h2>R Markdown</h2>
-    <ul>
-<li>R Markdown combines executable code snippets in R and other programming languages with a narrative text to fully reproducible reports.</li>
-</ul>
-
-<pre><code class="r">round(pi * 42^2, 3)
-</code></pre>
-
-<pre><code>## [1] 5541.769
+    <h2>Plot Code</h2>
+    <pre><code class="r">library(ggplot2)
+ggplot(mtcars, aes(wt, mpg)) + geom_point() +
+    geom_smooth(method = lm, 
+                fullrange = TRUE, color = &quot;black&quot;) +
+    geom_point() + ggtitle(&quot;mtcars: lm(mpg ~ wt)&quot;) +
+    coord_cartesian(xlim = c(1.5, 5.5), ylim = c(5,35))
 </code></pre>
 
   </div>
 </section>
 <section class="slide " id="slide-5">
   <div>
-    <h2>Plot Example</h2>
-    <pre><code class="r">plot(pressure, main=&quot;Vapor Pressure of Mercury 
-     as a Function of Temperature&quot;)
-</code></pre>
-
-<p><img src="assets/fig/pressure-1.png" alt="plot of chunk pressure"></p>
+    <h2>Plot</h2>
+    <p><img src="assets/fig/pressure-1.png" alt="plot of chunk pressure"></p>
 
   </div>
 </section>

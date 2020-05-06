@@ -17,42 +17,46 @@ knit        : slidify::knit2slides
 
 ---
 
-## Why Reproducible Reports?
+## My Shiny App 
 
-- Allows others to replicate the results and independently verify the results.
-- Replication is the highest standard in science.
-
----
-## How?
-
-- [Literate Programming](https://en.wikipedia.org/wiki/Literate_programming)
-- Executable source code snippets are inlined in the report and woven together.
-- It's supported in many programming languages.
-- For instance in R we have [R Markdown](http://rmarkdown.rstudio.com).
+- My app "Adding and Deleting Points" fits a linear model mpg ~ wt for the mtcars dataset.
+- It allows the user to uses the brush function to delete and add points in the scatter plot.
+- Each point a represents a observation. Deleted points are excluded from the model data.
+- The coefficients for the linear model are being updated after any changes to the points.
 
 ---
+## Model
 
-## R Markdown
-
-- R Markdown combines executable code snippets in R and other programming languages with a narrative text to fully reproducible reports.
+- The model is lm(mpg ~ wt, data = mtcars)
+- Below are the models coefficients with the full mtcars dataset. 
 
 ```r
-round(pi * 42^2, 3)
+summary(lm(mpg ~ wt, data = mtcars))$coef
 ```
 
 ```
-## [1] 5541.769
+##              Estimate Std. Error   t value     Pr(>|t|)
+## (Intercept) 37.285126   1.877627 19.857575 8.241799e-19
+## wt          -5.344472   0.559101 -9.559044 1.293959e-10
 ```
 
 ---
 
-## Plot Example
+## Plot Code
 
 
 ```r
-plot(pressure, main="Vapor Pressure of Mercury 
-     as a Function of Temperature")
+library(ggplot2)
+ggplot(mtcars, aes(wt, mpg)) + geom_point() +
+    geom_smooth(method = lm, 
+                fullrange = TRUE, color = "black") +
+    geom_point() + ggtitle("mtcars: lm(mpg ~ wt)") +
+    coord_cartesian(xlim = c(1.5, 5.5), ylim = c(5,35))
 ```
+
+---
+
+## Plot 
 
 ![plot of chunk pressure](assets/fig/pressure-1.png)
 
