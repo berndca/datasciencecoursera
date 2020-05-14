@@ -1,0 +1,97 @@
+---
+title: "Prediction Assignment Write Up"
+author: "Bernd Meyer"
+date: "5/14/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Synopsis
+
+In this report I'll be describing how I build a model to recognize human activity based on the data from the [Human Activity Recognition project](http://groupware.les.inf.puc-rio.br/har). Since a very accurate model is required to correctly identify the 20 test cases. I'm going to use a random forest model.
+
+## Reading the Data
+```{r init, message=FALSE}
+library(caret)
+library(dplyr)
+```
+
+```{r load-data, cache=TRUE}
+fullTraining <- read.csv("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv")
+fullTesting <- read.csv("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv")
+```
+Both data.frames have 160 columns. The first column in both data.frames is a row number. We delete it. The last column of the fullTraining data.frame is out outcome "classe". The last column of the testing data is "problem_id". Since we don't need this for prediction, we remove this column. Now we are checking for NA's.
+```{r training-nas}
+trainingNAs <- colSums(is.na(fullTraining))
+sum(trainingNAs>0)
+```
+There are 67 columns containing NAs in the training data. How about the test cases?
+```{r test-nas}
+allNaCols <- colSums(is.na(fullTesting)) == nrow(fullTesting)
+naColsToRemove <- c("X", names(fullTesting)[allNaCols])
+sum(allNaCols)
+```
+There are 100 columns containing nothing but NA in the testing data.frame. Since none of these columns can be used to predict, we can eleminate them in both fullTraining and fullTesting. First we check testing for near zero variables after removing the NA columns.
+```{r}
+testSubSet <- fullTesting %>%
+    select(-all_of(naColsToRemove))
+
+nzvIdx <- nearZeroVar(testSubSet)
+names(testSubSet)[nzvIdx]
+```
+We remove this variable as well.
+```{r}
+testSubSet <- testSubSet %>% select(-new_window, -problem_id)
+trainingColumnsToRemove <- c("X", naColsToRemove, "new_window")
+trainSubSet <- fullTraining %>% select(-all_of(trainingColumnsToRemove))
+```
+## Partitioning of Training Data
+
+In order to be able to estimate the out of sample error we partition the training data. We use 75% for training and the remaining 25% for testing and estimation of the error rate.
+
+```{r partition}
+set.seed(42)
+inTraining <- createDataPartition(trainSubSet$classe, p = .75, list=FALSE)
+training <- trainSubSet[inTraining,]
+testing <- trainSubSet[-inTraining,]
+
+x <- training[,-58]
+y <- training[,58]
+```
+## Model Setup and Calculation
+The model control settings are "cv" for K-fold cross-validation with number set to 5, i.e. 5 passes for the K-fold cross-validation. 
+```{r model, eval=FALSE}
+fitControl <- trainControl(method = "cv",
+                           number = 5,
+                           allowParallel = TRUE)
+
+my_model <- train(x, y, method="rf", data=training, trControl = fitControl)
+```
+```{r include=FALSE}
+my_model <- readRDS("/home/bernd/Sync/R/training/08-PracticalMachineLearning/week4/project/model.rds")
+```
+## Out of Sample Error Estimate
+```{r}
+cMrf <- confusionMatrix(predict(my_model, newdata = testing), testing$classe)
+cMrf$overall
+```
+The estimated out of sample accuracy is 0.9997961. That should be sufficient. Before we can predict the answers to the 20 test vectors we need to hack the test vectors to make them compatible with the model.
+
+```{r hack}
+testSubSet <- rbind(trainSubSet[1, -58] , testSubSet)
+testSubSet <- testSubSet[-1,]
+```
+Here is the prediction for the 20 test vectors.
+```{r}
+predict(my_model, newdata = testSubSet)
+```
+## Conclusion
+Random forest produced a very accurate model.
+```{r}
+plot(my_model)
+```
+
+As can be seen in the above plot the highest accuracy was achieved with just 29 predictors.
